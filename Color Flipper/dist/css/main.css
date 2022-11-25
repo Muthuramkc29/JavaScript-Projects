@@ -1,0 +1,88 @@
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: hsl(206deg, 33%, 96%);
+  font-family: "Roboto", sans-serif;
+}
+
+.header {
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+.header__logo {
+  color: hsl(205deg, 78%, 60%);
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+.header__links {
+  margin-left: 1rem;
+  color: black;
+  font-size: 1.1rem;
+  letter-spacing: 3px;
+  cursor: pointer;
+  text-decoration: none;
+}
+.header__links:hover {
+  color: hsl(205deg, 78%, 60%);
+}
+
+@media screen and (min-width: 768px) {
+  .main div h1 {
+    font-size: 2.5rem;
+  }
+  .main div span {
+    display: inline;
+  }
+}
+.main {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+.main__div {
+  background-color: black;
+  border-radius: 10px;
+  padding: 0 1rem;
+}
+.main__div h1 {
+  color: #ffffff;
+  letter-spacing: 4px;
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.main__div span {
+  display: block;
+  color: hsl(205deg, 78%, 60%);
+  text-align: center;
+  margin-top: 1rem;
+}
+.main__btn {
+  background-color: transparent;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  border: 2px solid black;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.main__btn:hover {
+  background-color: black;
+  color: #ffffff;
+  transition: all 0.4s;
+}/*# sourceMappingURL=main.css.map */

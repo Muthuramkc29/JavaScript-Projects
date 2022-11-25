@@ -1,0 +1,28 @@
+.header {
+  background-color: #ffffff;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  @include flexCenter(row, space-around, center);
+
+  &__logo {
+    color: $clr-primary;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    font-weight: bold;
+  }
+
+  &__links {
+    margin-left: 1rem;
+    color: black;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    cursor: pointer;
+    text-decoration: none;
+
+    &:hover {
+      color: $clr-primary;
+    }
+  }
+}

@@ -1,0 +1,27 @@
+$ff-primary: "Roboto", sans-serif;
+$ff-secondary: "Open Sans", sans-serif;
+$clr-primary: hsl(205, 78%, 60%);
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: hsl(206, 33%, 96%);
+  font-family: $ff-primary;
+}
+@mixin flexCenter($direction: "row", $justify, $align) {
+  display: flex;
+  flex-direction: $direction;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+@mixin transitionEase() {
+  transition: all 0.4s;
+}
+
+@mixin media-md {
+  @media screen and (min-width: 768px) {
+    @content;
+  }
+}

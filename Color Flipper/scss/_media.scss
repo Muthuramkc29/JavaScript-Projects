@@ -1,0 +1,9 @@
+@include media-md {
+  .main div h1 {
+    font-size: 2.5rem;
+  }
+
+  .main div span {
+    display: inline;
+  }
+}

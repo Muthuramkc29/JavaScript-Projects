@@ -1,0 +1,49 @@
+@import "././configs";
+@import "./header";
+@import "./media";
+
+.main {
+  height: 100vh;
+  @include flexCenter(column, center, center);
+  gap: 2rem;
+
+  &__div {
+    background-color: black;
+    border-radius: 10px;
+    padding: 0 1rem;
+
+    h1 {
+      color: #ffffff;
+      letter-spacing: 4px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    span {
+      display: block;
+      color: $clr-primary;
+      text-align: center;
+      margin-top: 1rem;
+    }
+  }
+
+  &__btn {
+    background-color: transparent;
+    padding: 0.75rem 1.25rem;
+    font-size: 1rem;
+    border-radius: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border: 2px solid black;
+    font-weight: bold;
+    cursor: pointer;
+    @include transitionEase;
+
+    &:hover {
+      background-color: black;
+      color: #ffffff;
+      @include transitionEase;
+    }
+  }
+}
