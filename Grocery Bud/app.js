@@ -18,12 +18,16 @@ input.addEventListener("keyup", function (e) {
 let arr = [];
 
 const fetchLocalStorage = () => {
-  const items = JSON.parse(localStorage.getItem("items"));
-  console.log(items);
-  arr = [...items];
+  let items = localStorage.getItem("items");
+  // console.log(items);
+  if (items) {
+    items = JSON.parse(items);
+  } else {
+    items = [];
+  }
   // console.log(arr);
 
-  items?.forEach((item) => {
+  items.forEach((item) => {
     createElement(item);
   });
 };
@@ -40,7 +44,7 @@ const editLocalStorage = (item, value) => {
   console.log(item);
   const editedItems = items.map((ele) => {
     console.log(ele);
-    console.log(item.dataset.id);
+    console.log(item.dataset);
     console.log(ele.id === item.dataset.id);
     if (ele.id === item.dataset.id) {
       return { ...ele, item: value };
