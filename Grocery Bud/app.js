@@ -7,7 +7,13 @@ const clearBtn = document.querySelector(".clear-btn");
 
 let item;
 let edit = false;
+// To pick the element seperately to edit
 let curTarget;
+
+input.addEventListener("keyup", function (e) {
+  // console.log(this.value);
+  item = this.value;
+});
 
 let arr = [];
 
@@ -15,7 +21,7 @@ const fetchLocalStorage = () => {
   const items = JSON.parse(localStorage.getItem("items"));
   console.log(items);
   arr = [...items];
-  console.log(arr);
+  // console.log(arr);
 
   items?.forEach((item) => {
     createElement(item);
@@ -34,32 +40,34 @@ const editLocalStorage = (item, value) => {
   console.log(item);
   const editedItems = items.map((ele) => {
     console.log(ele);
-    console.log(ele.toLowerCase() === item.toLowerCase());
-    if (ele.toLowerCase() === item.toLowerCase()) {
-      return value;
+    console.log(item.dataset.id);
+    console.log(ele.id === item.dataset.id);
+    if (ele.id === item.dataset.id) {
+      return { ...ele, item: value };
     }
     return ele;
   });
   localStorage.setItem("items", JSON.stringify(editedItems));
 };
 
-const deleteFromLocalStorage = (itemName) => {
+const deleteFromLocalStorage = (targetItem) => {
   const items = JSON.parse(localStorage.getItem("items"));
-  const newItems = items.filter((item) => item !== itemName);
+  const newItems = items.filter((item) => {
+    // console.log(targetItem);
+    // console.log(item.id === targetItem.id);
+    // console.log(item.id);
+    // console.log(targetItem.dataset.id);
+    return item.id !== targetItem.dataset.id;
+  });
   localStorage.setItem("items", JSON.stringify(newItems));
 };
 
-input.addEventListener("keyup", function (e) {
-  console.log(this.value);
-  item = this.value;
-});
-
 const editHandler = (e) => {
   console.log("called");
-  const target = e.currentTarget.parentElement.parentElement.firstElementChild;
-  input.value = target.textContent;
+  const target = e.currentTarget.parentElement.parentElement;
+  input.value = target.firstElementChild.textContent;
 
-  console.log(target);
+  console.log(target.firstElementChild);
   edit = true;
   submitBtn.textContent = "Edit";
   //   addHandler(e, target);
@@ -68,9 +76,10 @@ const editHandler = (e) => {
 
 const deleteHandler = (e) => {
   const target = e.currentTarget.parentElement.parentElement;
-  const itemName =
-    e.currentTarget.parentElement.previousElementSibling.textContent;
-  deleteFromLocalStorage(itemName);
+  console.log(target);
+  // const itemName =
+  //   e.currentTarget.parentElement.previousElementSibling.textContent;
+  deleteFromLocalStorage(target);
   target.remove();
   if (groceryList.children.length === 0)
     groceryContainer.classList.remove("show-container");
@@ -84,18 +93,41 @@ const addHandler = (e) => {
     alertFn("alert-danger", "Please enter an item");
     return;
   }
+
   if (!edit) {
-    createElement(item);
+    const article = document.createElement("article");
+    article.classList.add("grocery-item");
+    const id = new Date().getTime().toString();
+    let attr = document.createAttribute("data-id");
+    attr.value = id;
+    article.setAttributeNode(attr);
+    article.innerHTML = `<p class="title">${item}</p>
+                        <div class="btn-container">
+                        <button type="button" class="edit-btn">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" class="delete-btn">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                        </div>`;
+    groceryList.appendChild(article);
+    groceryContainer.classList.add("show-container");
+    //   console.log(groceryList);
+    const editBtn = document.querySelectorAll(".edit-btn");
+    const deleteBtn = document.querySelectorAll(".delete-btn");
+    deleteBtn.forEach((btn) => btn.addEventListener("click", deleteHandler));
+    editBtn.forEach((btn) => btn.addEventListener("click", editHandler));
     // console.log(editBtn);
-    addToLocalStorage(item);
+    addToLocalStorage({ id, item });
     input.value = "";
     alertFn("alert-success", "Item added Successfully");
   } else {
-    editLocalStorage(curTarget.textContent, input.value);
-    curTarget.textContent = input.value;
+    // console.log(curTarget);
+    editLocalStorage(curTarget, input.value);
+    curTarget.firstElementChild.textContent = input.value;
     input.value = "";
     edit = false;
-    console.log(curTarget);
+    // console.log(curTarget);
     alertFn("alert-success", "Value Changed");
   }
 
@@ -125,7 +157,11 @@ fetchLocalStorage();
 function createElement(item) {
   const article = document.createElement("article");
   article.classList.add("grocery-item");
-  article.innerHTML = `<p class="title">${item}</p>
+  // const id = new Date().getTime().toString();
+  let attr = document.createAttribute("data-id");
+  attr.value = item.id;
+  article.setAttributeNode(attr);
+  article.innerHTML = `<p class="title">${item.item}</p>
                         <div class="btn-container">
                         <button type="button" class="edit-btn">
                             <i class="fas fa-edit"></i>
