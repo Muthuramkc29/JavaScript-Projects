@@ -5,34 +5,29 @@ const alert = document.querySelector(".alert");
 const groceryContainer = document.querySelector(".grocery-container");
 const clearBtn = document.querySelector(".clear-btn");
 
-let item;
 let edit = false;
 // To pick the element seperately to edit
 let curTarget;
-
-input.addEventListener("keyup", function (e) {
-  // console.log(this.value);
-  item = this.value;
-});
 
 let arr = [];
 
 const fetchLocalStorage = () => {
   let items = localStorage.getItem("items");
-  // console.log(items);
+  console.log(items);
   if (items) {
     items = JSON.parse(items);
+    arr = [...items];
   } else {
-    items = [];
+    arr = [];
   }
-  // console.log(arr);
 
-  items.forEach((item) => {
+  arr.forEach((item) => {
     createElement(item);
   });
 };
 
 const addToLocalStorage = (item) => {
+  console.log(arr);
   arr.push(item);
   window.localStorage.setItem("items", JSON.stringify(arr));
 };
@@ -57,10 +52,6 @@ const editLocalStorage = (item, value) => {
 const deleteFromLocalStorage = (targetItem) => {
   const items = JSON.parse(localStorage.getItem("items"));
   const newItems = items.filter((item) => {
-    // console.log(targetItem);
-    // console.log(item.id === targetItem.id);
-    // console.log(item.id);
-    // console.log(targetItem.dataset.id);
     return item.id !== targetItem.dataset.id;
   });
   localStorage.setItem("items", JSON.stringify(newItems));
@@ -74,7 +65,6 @@ const editHandler = (e) => {
   console.log(target.firstElementChild);
   edit = true;
   submitBtn.textContent = "Edit";
-  //   addHandler(e, target);
   curTarget = target;
 };
 
@@ -98,40 +88,20 @@ const addHandler = (e) => {
     return;
   }
 
+  const id = new Date().getTime().toString();
+  const element = { id, item: input.value };
   if (!edit) {
-    const article = document.createElement("article");
-    article.classList.add("grocery-item");
-    const id = new Date().getTime().toString();
-    let attr = document.createAttribute("data-id");
-    attr.value = id;
-    article.setAttributeNode(attr);
-    article.innerHTML = `<p class="title">${item}</p>
-                        <div class="btn-container">
-                        <button type="button" class="edit-btn">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button type="button" class="delete-btn">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                        </div>`;
-    groceryList.appendChild(article);
-    groceryContainer.classList.add("show-container");
-    //   console.log(groceryList);
-    const editBtn = document.querySelectorAll(".edit-btn");
-    const deleteBtn = document.querySelectorAll(".delete-btn");
-    deleteBtn.forEach((btn) => btn.addEventListener("click", deleteHandler));
-    editBtn.forEach((btn) => btn.addEventListener("click", editHandler));
-    // console.log(editBtn);
-    addToLocalStorage({ id, item });
+    createElement(element);
+
+    addToLocalStorage(element);
     input.value = "";
     alertFn("alert-success", "Item added Successfully");
   } else {
-    // console.log(curTarget);
     editLocalStorage(curTarget, input.value);
     curTarget.firstElementChild.textContent = input.value;
     input.value = "";
     edit = false;
-    // console.log(curTarget);
+
     alertFn("alert-success", "Value Changed");
   }
 
@@ -161,7 +131,6 @@ fetchLocalStorage();
 function createElement(item) {
   const article = document.createElement("article");
   article.classList.add("grocery-item");
-  // const id = new Date().getTime().toString();
   let attr = document.createAttribute("data-id");
   attr.value = item.id;
   article.setAttributeNode(attr);
@@ -176,7 +145,6 @@ function createElement(item) {
                         </div>`;
   groceryList.appendChild(article);
   groceryContainer.classList.add("show-container");
-  //   console.log(groceryList);
   const editBtn = document.querySelectorAll(".edit-btn");
   const deleteBtn = document.querySelectorAll(".delete-btn");
   deleteBtn.forEach((btn) => btn.addEventListener("click", deleteHandler));
